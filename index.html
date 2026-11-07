@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>My Cyber VR App</title>
-    <!-- Core VR Graphics Engine -->
-    <script src="https://cloudflare.com"></script> 
+    <!-- Stable Engine Script -->
+    <script src="https://cloudflare.com"></script>
   </head>
   <body>
     <a-scene webxr="referenceSpaceType: local-floor">
@@ -28,15 +28,14 @@
         <!-- Right Virtual Hand Interface (Ready for Right Switch 2 Joy-Con) -->
         
           <a-sphere radius="0.04" color="#3366ff"></a-sphere>
-          <a-cylinder rotation="90 0 0" radius="0.01" height="0.1" color="#3366ff" position="0 0 -0.04"></a-cylinder>
+          <a-cylinder rotation="90 0 0" radius="0.01" height="0.1" color="#3366ff" position="0 0 -0.04">
         
       
 
     </a-scene>
 
-    <!-- 4. Real-time Network Bridge Script (Listens to your Windows PC Server) -->
+    <!-- 4. Real-time Network Bridge Script -->
     <script>
-      // Connect to your local home desktop IP address (We will configure this address later)
       const pcSocket = new WebSocket('ws://192.168.1.X:8080');
       
       const leftHand = document.getElementById('left-hand');
@@ -44,9 +43,7 @@
 
       pcSocket.onmessage = (event) => {
           const controllerPacket = JSON.parse(event.data);
-          
           if (controllerPacket.type === 'controller_update') {
-              // Automatically rotate hands on screen based on Switch 2 gyro hacks
               if (controllerPacket.hand === 'left') {
                   leftHand.setAttribute('rotation', { x: controllerPacket.pitch, y: controllerPacket.yaw, z: controllerPacket.roll });
               } else if (controllerPacket.hand === 'right') {
