@@ -2,14 +2,58 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>My Mobile VR App</title>
+    <title>My Cyber VR App</title>
+    <!-- Loads the standard 3D A-Frame Engine -->
     <script src="https://aframe.io"></script>
   </head>
   <body>
-    <a-scene>
-      <a-box position="0 1.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-      <a-plane position="0 0 0" rotation="-90 0 0" width="20" height="20" color="#7BC8A4"></a-plane>
-      <a-sky color="#ECECEC"></a-sky>
+    <a-scene webxr="referenceSpaceType: local-floor">
+      
+      <!-- 1. Neon Floating Target Shape -->
+      <a-box id="target-box" position="0 1.5 -3" rotation="0 45 0" color="#00ffcc"></a-box>
+
+      <!-- 2. Basic Grid Ground Alignment Floor -->
+      <a-plane position="0 0 0" rotation="-90 0 0" width="30" height="30" color="#111115"></a-plane>
+
+      <!-- 3. Virtual Player Tracking Rig (Camera Head + Hands) -->
+      
+        
+
+        <!-- Left Virtual Hand Interface (Ready for Left Switch 2 Joy-Con) -->
+        
+          <a-sphere radius="0.04" color="#ff3366"></a-sphere>
+          <a-cylinder rotation="90 0 0" radius="0.01" height="0.1" color="#ff3366" position="0 0 -0.04"></a-cylinder>
+        
+
+        <!-- Right Virtual Hand Interface (Ready for Right Switch 2 Joy-Con) -->
+        
+          <a-sphere radius="0.04" color="#3366ff"></a-sphere>
+          <a-cylinder rotation="90 0 0" radius="0.01" height="0.1" color="#3366ff" position="0 0 -0.04"></a-cylinder>
+        
+      
+
     </a-scene>
+
+    <!-- 4. Real-time Network Bridge Script (Listens to your future Windows Server) -->
+    <script>
+      // Connect to your local home desktop IP address (We will configure this address later)
+      const pcSocket = new WebSocket('ws://192.168.1.X:8080');
+      
+      const leftHand = document.getElementById('left-hand');
+      const rightHand = document.getElementById('right-hand');
+
+      pcSocket.onmessage = (event) => {
+          const controllerPacket = JSON.parse(event.data);
+          
+          if (controllerPacket.type === 'controller_update') {
+              // Automatically rotate hands on screen based on Switch 2 gyro hacks
+              if (controllerPacket.hand === 'left') {
+                  leftHand.setAttribute('rotation', { x: controllerPacket.pitch, y: controllerPacket.yaw, z: controllerPacket.roll });
+              } else if (controllerPacket.hand === 'right') {
+                  rightHand.setAttribute('rotation', { x: controllerPacket.pitch, y: controllerPacket.yaw, z: controllerPacket.roll });
+              }
+          }
+      };
+    </script>
   </body>
 </html>
