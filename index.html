@@ -3,9 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>My Cyber VR App</title>
-    <!-- Loads the standard 3D A-Frame Engine with the correct address -->
+    <!-- Core VR Graphics Engine -->
     <script src="https://aframe.io"></script>
-
   </head>
   <body>
     <a-scene webxr="referenceSpaceType: local-floor">
@@ -13,7 +12,7 @@
       <!-- 1. Neon Floating Target Shape -->
       <a-box id="target-box" position="0 1.5 -3" rotation="0 45 0" color="#00ffcc"></a-box>
 
-      <!-- 2. Basic Grid Ground Alignment Floor -->
+      <!-- 2. Basic Ground Floor Alignment -->
       <a-plane position="0 0 0" rotation="-90 0 0" width="30" height="30" color="#111115"></a-plane>
 
       <!-- 3. Virtual Player Tracking Rig (Camera Head + Hands) -->
@@ -35,7 +34,7 @@
 
     </a-scene>
 
-    <!-- 4. Real-time Network Bridge Script (Listens to your future Windows Server) -->
+    <!-- 4. Real-time Network Bridge Script (Listens to your Windows PC Server) -->
     <script>
       // Connect to your local home desktop IP address (We will configure this address later)
       const pcSocket = new WebSocket('ws://192.168.1.X:8080');
